@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:mini_gallary/screen/sharedpref/home_screen.dart';
+import 'package:mini_gallary/provider/gallery_image_provider.dart';
+import 'package:provider/provider.dart';
+import 'screen/sqflite/sqlite_home.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+
+    MultiProvider(providers: [
+      ChangeNotifierProvider(create: (_) => GalleryImageProvider(),)
+    ], child: const MyApp()),);
 }
 
 class MyApp extends StatelessWidget {
@@ -16,7 +22,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: MultiImageSaveScreen(),
+      home: SqliteHome(),
     );
   }
 }
