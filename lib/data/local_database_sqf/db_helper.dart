@@ -32,10 +32,11 @@ class DbHelper {
     Directory rootDir = await getApplicationDocumentsDirectory();
     print(' roothPath : ${rootDir.path}');
     final dbPath = path.join(rootDir.path, 'mini_gallery.db');
-
     return await openDatabase(dbPath, version: 1, onCreate: (db, version) async {
       await db.execute(createTableQuery);
+      // await deleteDatabase(dbPath);
     });
+
   }
 
   Future<int> insertData(MiniGalleryModel node) async {
@@ -45,11 +46,15 @@ class DbHelper {
 
   Future<List<MiniGalleryModel>> getAllData() async {
     final db = await checkDatabase();
-    final dataList = await db.query(miniTable);
+    final dataList = await db.query(miniTable,);
     return List.generate(dataList.length, (index) => MiniGalleryModel.fromMap(dataList[index]));
   }
   Future<int> deleteTodo (int id)async{
     final db = await checkDatabase();
     return await db.delete(miniTable,where:'$miniTableColumId = ?',whereArgs: [id]);
+  }
+  Future<int> upDate (int id)async{
+    final db = await checkDatabase();
+    return await db.update(miniTable,{},where:'$miniTableColumId = ?',whereArgs: [id]);
   }
 }
